@@ -1,16 +1,10 @@
 const { HttpError, ctrlWrapper } = require('../helpers');
-const {
-  listContacts,
-  getContactById,
-  removeContact,
-  addContact,
-  updateContact,
-  updateStatusContact,
-} = require('../models/contacts');
+
+const Contact  = require("../models/contact")
 
 
 const getAll = async (req, res, next) => {
-  const contacts = await listContacts();
+  const contacts = await  Contact.find();
   res.status(200).json({
     status: 'success',
     code: 200,
@@ -20,7 +14,7 @@ const getAll = async (req, res, next) => {
 
 const getById = async (req, res, next) => {
   const { contactId } = req.params;
-  const contact = await getContactById(contactId);
+  const contact = await Contact.findOne(contactId);
   if (!contact) {
     throw HttpError(404, 'Not found');
   }
@@ -33,7 +27,7 @@ const getById = async (req, res, next) => {
 
 const add = async (req, res, next) => {
   console.log('object');
-  const result = await addContact(req.body);
+  const result = await Contact.create(req.body);
   res.status(201).json({
     status: 'success',
     code: 201,
@@ -46,7 +40,7 @@ const updateById = async (req, res, next) => {
   if (Object.keys(req.body).length === 0) {
     throw HttpError(400, 'missing fields');
   }
-  const result = await updateContact(contactId, req.body);
+  const result = await Contact.findOne(contactId, req.body);
   if (!result) {
     throw HttpError(404, 'Not found');
   }
@@ -59,7 +53,7 @@ const updateById = async (req, res, next) => {
 
 const deleteById = async (req, res, next) => {
   const { contactId } = req.params;
-  const contact = await removeContact(contactId);
+  const contact = await Contact.deleteOne(contactId);
   if (!contact) {
     throw HttpError(404, 'Not found');
   }
@@ -76,7 +70,7 @@ const updateStatus = async (req, res, next) => {
   if (Object.keys(req.body).length === 0) {
     throw HttpError(400, 'missing fields favorite');
   }
-  const result = await updateStatusContact(contactId, req.body);
+  const result = await Contact.findOne(contactId, req.body);
   if (!result) {
     throw HttpError(404, 'Not found');
   }
