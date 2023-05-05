@@ -16,9 +16,13 @@ const patchSchema = Joi.object({
   favorite: Joi.boolean().required(),
 });
 
-
-module.exports = {
+const schemas = {
   postSchema,
   putSchema,
-  patchSchema
+  patchSchema,
 };
+module.exports = {
+  schemas
+};
+
+
