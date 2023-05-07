@@ -36,7 +36,7 @@ const login = async (req, res) => {
        throw HttpError(401, "Email or password is wrong");
     }
     const payload = {id: user._id,}
-    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "256h" });
     await User.findByIdAndUpdate(user._id, { token });
     res.json({
         token,
@@ -44,19 +44,17 @@ const login = async (req, res) => {
 }
 
 const getCurrent = async (req, res) => {
-    const { email, name } = req.user;
-    res.json({
-        email,
-        name,
-    })
-}
+  const { _id } = req.user;
+  const user = await User.findById(_id);
+  res.status(200).json({
+    email: user.email,
+  });
+};
 
 const logout = async (req, res) => {
     const { _id } = req.user;
     await User.findByIdAndUpdate(_id, {token: ""});
-    res.json({
-        message: "Not authorized"
-    })
+    res.status(204).json();
 }
 
 
