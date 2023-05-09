@@ -47,5 +47,5 @@ const Contact = model("contact", contactSchema);
 
 module.exports = {
   schemas,
-  Contact
+  Contact,
 };
