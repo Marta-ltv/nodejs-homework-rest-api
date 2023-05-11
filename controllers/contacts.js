@@ -57,7 +57,7 @@ const updateFavorite = async (req, res) => {
 const deleteById = async (req, res) => {
   const { _id } = req.user;
   const { contactId } = req.params;
-  const result = await Contact.findByIdAndRemove({ _id: contactId, owner: _id });
+  const result = await Contact.deleteOne({ _id: contactId, owner: _id });
   if (!result) {
     throw HttpError(404, "Not found");
   }
