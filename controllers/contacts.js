@@ -34,9 +34,9 @@ const add = async (req, res) => {
 };
 
 const updateById = async (req, res) => {
-  const { _id: owner } = req.user;
+  const {_id: owner} = req.user;
   const { contactId } = req.params;
-  const result = await Contact.findOneAndUpdate(contactId, req.body, owner, {new: true,});
+  const result = await Contact.findOneAndUpdate({_id: contactId, owner}, {...req.body}, {new: true});
   if (!result) {
     throw HttpError(404, 'Not found');
   }
@@ -45,9 +45,9 @@ const updateById = async (req, res) => {
 
 
 const updateFavorite = async (req, res) => {
-  const { _id: owner } = req.user;
+  const {_id: owner} = req.user;
   const { contactId } = req.params;
-  const result = await Contact.findOneAndUpdate(contactId, req.body, owner, {new: true,});
+  const result = await Contact.findOneAndUpdate({_id: contactId, owner}, {...req.body}, {new: true});
   if (!result) {
     throw HttpError(404, "Not found");
   }
@@ -57,7 +57,7 @@ const updateFavorite = async (req, res) => {
 const deleteById = async (req, res) => {
   const { _id } = req.user;
   const { contactId } = req.params;
-  const result = await Contact.deleteOne({ _id: contactId, owner: _id });
+  const result = await Contact.findOneAndRemove({ _id: contactId, owner: _id });
   if (!result) {
     throw HttpError(404, "Not found");
   }
