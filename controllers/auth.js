@@ -20,7 +20,8 @@ const register = async (req, res) => {
 
     res.status(201).json({
     user: {
-      email: newUser.email,
+        email: newUser.email,
+        subscription: "starter",
     },
   });
 };
@@ -44,6 +45,7 @@ const login = async (req, res) => {
     token,
     user: {
       email,
+      subscription: 'starter',
     },
   });
 };
@@ -53,6 +55,7 @@ const getCurrent = async (req, res) => {
   const user = await User.findById(_id);
   res.status(200).json({
     email: user.email,
+    subscription: user.subscription,
   });
 };
 
