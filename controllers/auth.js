@@ -97,7 +97,3 @@ module.exports = {
     logout: ctrlWrapper(logout),
     updateAvatar: ctrlWrapper(updateAvatar),
 }
-
-
-
-
