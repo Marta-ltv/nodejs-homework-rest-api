@@ -20,5 +20,7 @@ router.get("/current", authenticate, ctrl.getCurrent);
 
 router.post("/logout", authenticate, ctrl.logout);
 
+router.patch("/avatars",authenticate);
+
 module.exports = router;
 

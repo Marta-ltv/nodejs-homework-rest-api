@@ -14,7 +14,6 @@ const updateFavoriteSchemas = Joi.object({
   favorite: Joi.boolean().required(),
 });
 
-
 const contactSchema = new Schema({
   name: {
     type: String,

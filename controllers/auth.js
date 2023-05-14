@@ -21,9 +21,11 @@ const register = async (req, res) => {
     const newUser = await User.create({ ...req.body, password: hashPassword, avatarURL });
 
     res.status(201).json({
+    user: {
         email: newUser.email,
-        name: newUser.name,
-    })
+        subscription: "starter",
+    },
+  });
 };
 
 const login = async (req, res) => {
@@ -40,16 +42,21 @@ const login = async (req, res) => {
     const payload = {id: user._id,}
     const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
     await User.findByIdAndUpdate(user._id, { token });
-    res.json({
-        token,
-    })
-}
+    res.status(200).json({
+    token,
+    user: {
+      email,
+      subscription: 'starter',
+    },
+  });
+};
 
 const getCurrent = async (req, res) => {
   const { _id } = req.user;
   const user = await User.findById(_id);
   res.status(200).json({
     email: user.email,
+    subscription: user.subscription,
   });
 };
 
@@ -66,9 +73,6 @@ module.exports = {
     getCurrent: ctrlWrapper(getCurrent),
     logout: ctrlWrapper(logout),
 }
-
-
-
 
 
 
