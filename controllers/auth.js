@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const gravatar = require("gravatar");
 const path = require("path");
 const fs = require("fs/promises");
+const { jimp } = require('../middlewares');
 
 const { SECRET_KEY } = process.env;
 
@@ -70,19 +71,23 @@ const logout = async (req, res) => {
 }
 
 const updateAvatar = async (req, res) => {
+  const { _id } = req.user;
   const { path: tempUpload, originalname } = req.file;
-  const { id } = req.user;
-  const imageName = `${id}_${originalname}`;
+
+  const avatarFileName = `${_id}_${originalname}`;
+  const resultUpload = path.join('public', 'avatars', avatarFileName);
+
   try {
-    const resultUpload = path.join(avatarsDir, imageName);
     await fs.rename(tempUpload, resultUpload);
-    const avatarURL = path.join("public", "avatars", imageName);
-    await User.findByIdAndUpdate(req.user.id, { avatarURL });
-    res.json({ avatarURL });
+
+    const avatarURL = path.join('public', 'avatars', avatarFileName);
+    await User.findByIdAndUpdate(_id, { avatarURL });
+
+    res.status(200).json({ avatarURL });
   } catch (error) {
     await fs.unlink(tempUpload);
-    throw error;
   }
+  jimp(resultUpload);
 };
 
 
