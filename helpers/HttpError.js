@@ -9,7 +9,7 @@ const errorMessageList = {
 const HttpError = (status, message = errorMessageList[status]) => {
     const error = new Error(message);
       error.status = status;
-      throw error;
+      return error;
 }
 
 module.exports = HttpError;
