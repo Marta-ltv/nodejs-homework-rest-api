@@ -102,16 +102,3 @@ module.exports = {
 
 
 
-
-// const decodeToken = jwt.decode(token);
-// console.log(decodeToken);
-
-// try {
-//   const { id } = jwt.verify(token, SECRET_KEY);
-//   console.log(id);
-//   const invalidToken = ""
-//   const result = jwt.verify(invalidToken, SECRET_KEY)
-// }
-// catch (error) {
-//   console.log(error.message);
-// }
