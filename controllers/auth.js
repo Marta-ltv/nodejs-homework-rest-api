@@ -9,7 +9,6 @@ const { jimp } = require('../middlewares');
 
 const { SECRET_KEY } = process.env;
 
-const avatarsDir = path.join(__dirname, "../", "public", "avatars");
 
 const register = async (req, res) => {
     const { email, password } = req.body;
