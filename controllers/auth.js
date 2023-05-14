@@ -3,9 +3,12 @@ const { HttpError, ctrlWrapper } = require('../helpers');
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 const gravatar = require("gravatar");
+const path = require("path");
+const fs = require("fs/promises");
 
 const { SECRET_KEY } = process.env;
 
+const avatarsDir = path.join(__dirname, "../", "public", "avatars");
 
 const register = async (req, res) => {
     const { email, password } = req.body;
@@ -66,12 +69,29 @@ const logout = async (req, res) => {
     res.status(204).json();
 }
 
+const updateAvatar = async (req, res) => {
+  const { path: tempUpload, originalname } = req.file;
+  const { id } = req.user;
+  const imageName = `${id}_${originalname}`;
+  try {
+    const resultUpload = path.join(avatarsDir, imageName);
+    await fs.rename(tempUpload, resultUpload);
+    const avatarURL = path.join("public", "avatars", imageName);
+    await User.findByIdAndUpdate(req.user.id, { avatarURL });
+    res.json({ avatarURL });
+  } catch (error) {
+    await fs.unlink(tempUpload);
+    throw error;
+  }
+};
+
 
 module.exports = {
     register: ctrlWrapper(register),
     login: ctrlWrapper(login),
     getCurrent: ctrlWrapper(getCurrent),
     logout: ctrlWrapper(logout),
+    updateAvatar: ctrlWrapper(updateAvatar),
 }
 
 
