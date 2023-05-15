@@ -14,6 +14,10 @@ const updateFavoriteSchemas = Joi.object({
   favorite: Joi.boolean().required(),
 });
 
+const userVerifySchema = Joi.object({
+  email: Joi.string().required(),
+});
+
 const contactSchema = new Schema({
   name: {
     type: String,
@@ -38,6 +42,7 @@ const contactSchema = new Schema({
 const schemas = {
   addSchema,
   updateFavoriteSchemas,
+  userVerifySchema,
 };
 
 contactSchema.post("save", handleMongooseError);
