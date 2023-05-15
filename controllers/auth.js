@@ -9,6 +9,8 @@ const { jimp } = require("../middlewares");
 
 const { SECRET_KEY } = process.env;
 
+const avatarsDir = path.join(__dirname, "../", "public", "avatars");
+
 const register = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
@@ -18,7 +20,7 @@ const register = async (req, res) => {
   }
 
   const hashPassword = await bcrypt.hash(password, 10);
-  const avatarUrl = gravatar.url(email, { s: "200", r: "pg", d: "404" });
+  const avatarUrl = gravatar.url(email);
 
   const newUser = await User.create({
     ...req.body,
@@ -78,7 +80,7 @@ const updateAvatar = async (req, res) => {
   const { path: tempUpload, originalname } = req.file;
 
   const avatarFileName = `${_id}_${originalname}`;
-  const resultUpload = path.join("public", "avatars", avatarFileName);
+  const resultUpload = path.join(avatarsDir, avatarFileName);
 
   try {
     await fs.rename(tempUpload, resultUpload);
