@@ -107,37 +107,37 @@ const updateAvatar = async (req, res) => {
   jimp(resultUpload);
 };
 
-const userVerification = async (req, res) => {
-  const { verificationToken } = req.params;
-  const user = await User.findOne({ verificationToken: verificationToken });
-  if (!user) {
-    throw HttpError(404, 'User not found');
-  }
-  await User.findOneAndUpdate(
-    { email: user.email },
-    {
-      verificationToken: null,
-      verify: true,
-    }
-  );
-  res.status(200).json({
-    status: 'OK',
-    message: 'Verification successful',
-  });
-};
+// const userVerification = async (req, res) => {
+//   const { verificationToken } = req.params;
+//   const user = await User.findOne({ verificationToken: verificationToken });
+//   if (!user) {
+//     throw HttpError(404, 'User not found');
+//   }
+//   await User.findOneAndUpdate(
+//     { email: user.email },
+//     {
+//       verificationToken: null,
+//       verify: true,
+//     }
+//   );
+//   res.status(200).json({
+//     status: 'OK',
+//     message: 'Verification successful',
+//   });
+// };
 
-const resendEmail = async (req, res) => {
-  const user = await User.findOne(req.body);
-  if (!user.verificationToken) {
-    throw HttpError(409, 'Email has already been verified ');
-  }
-  sendEmail('martalitvinchuk@gmail.com', user.verificationToken);
+// const resendEmail = async (req, res) => {
+//   const user = await User.findOne(req.body);
+//   if (!user.verificationToken) {
+//     throw HttpError(409, 'Email has already been verified ');
+//   }
+//   sendEmail('martalitvinchuk@gmail.com', user.verificationToken);
 
-  res.status(200).json({
-    status: 'OK',
-    message: 'Verification email sent',
-  });
-};
+//   res.status(200).json({
+//     status: 'OK',
+//     message: 'Verification email sent',
+//   });
+// };
 
 module.exports = {
   register: ctrlWrapper(register),
